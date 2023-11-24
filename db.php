@@ -13,8 +13,6 @@ class DB{
     {
         $this->table=$table;
         $this->pdo=new PDO($this->dsn,'root','');
-
-
     }
     
 
@@ -45,10 +43,9 @@ class DB{
         }
     }
     
-    function total($table, $id)
+    function total($id)
     {
-        global $pdo;
-        $sql = "select count(`id`) from `$table` ";
+        $sql = "select count(`id`) from `$this->table` ";
     
         if (is_array($id)) {
             foreach ($id as $col => $value) {
@@ -61,13 +58,12 @@ class DB{
             echo "錯誤:參數的資料型態比須是數字或陣列";
         }
         //echo 'find=>'.$sql;
-        $row = $pdo->query($sql)->fetchColumn();
+        $row = $this->pdo->query($sql)->fetchColumn();
         return $row;
     }
     //$table
     function find($id)
     {
-        global $pdo;
         $sql = "select * from `$this->table` ";
     
         if (is_array($id)) {
