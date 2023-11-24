@@ -5,7 +5,7 @@ session_start();
 class DB{
 
     protected $dsn="mysql:host=localhost;charset=utf8;dbname=school";
-    protected $pdo=new PDO($dsn,'root','');
+    protected $pdo;
     protected $table;
 
 
