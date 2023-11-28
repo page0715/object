@@ -23,9 +23,7 @@ class DB{
             if (is_array($where)) {
     
                 if (!empty($where)) {
-                    foreach ($where as $col => $value) {
-                        $tmp[] = "`$col`='$value'";
-                    }
+                    $tmp = $this->a2s($where);
                     $sql .= " where " . join(" && ", $tmp);
                 }
             } else {
@@ -49,9 +47,7 @@ class DB{
             if (is_array($where)) {
     
                 if (!empty($where)) {
-                    foreach ($where as $col => $value) {
-                        $tmp[] = "`$col`='$value'";
-                    }
+                    $tmp = $this->a2s($where);
                     $sql .= " where " . join(" && ", $tmp);
                 }
             } else {
@@ -73,9 +69,7 @@ class DB{
         $sql = "select * from `$this->table` ";
     
         if (is_array($id)) {
-            foreach ($id as $col => $value) {
-                $tmp[] = "`$col`='$value'";
-            }
+            $tmp = $this->a2s($id);
             $sql .= " where " . join(" && ", $tmp);
         } else if (is_numeric($id)) {
             $sql .= " where `id`='$id'";
@@ -91,10 +85,8 @@ class DB{
         if(isset($array['id'])){
             $sql = "update `$this->table` set ";
     
-            if (!empty($cols)) {
-                foreach ($cols as $col => $value) {
-                    $tmp[] = "`$col`='$value'";
-                }
+            if (!empty($array)) {
+                $tmp = $this->a2s($array);
             } else {
                 echo "錯誤:缺少要編輯的欄位陣列";
             }
@@ -117,9 +109,7 @@ class DB{
         $sql = "delete from `$this->table` where ";
     
         if (is_array($id)) {
-            foreach ($id as $col => $value) {
-                $tmp[] = "`$col`='$value'";
-            }
+            $tmp = $this->a2s($id);
             $sql .= join(" && ", $tmp);
         } else if (is_numeric($id)) {
             $sql .= " `id`='$id'";
@@ -135,7 +125,14 @@ class DB{
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
     }
-    
+
+    private function a2s($array){
+        foreach ($array as $col => $value) {
+            $tmp[] = "`$col`='$value'";
+        }
+        return $tmp;
+    }
+ 
 }
 
 function dd($array)
